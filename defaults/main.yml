@@ -3,3 +3,20 @@
 
 ww4_git_path: "/opt/ww4_git/"
 ww4_git_version: "v4.4.0"
+
+WW4_ipaddr:     130.233.180.176
+WW4_netmask:    255.255.255.128
+WW4_network:    130.233.180.128
+WW4_dhcp_start: 130.233.180.170
+WW4_dhcp_end:   130.233.180.174
+
+
+container_name: rhel9_001
+container_path: /var/warewulf_chroots/
+container_packages: ["basesystem","bash","chkconfig","coreutils","e2fsprogs","ethtool","filesystem","findutils",
+          "gawk","grep","initscripts","iproute","iputils","net-tools","nfs-utils","pam",
+          "psmisc","rsync","sed","setup","shadow-utils","rsyslog","tzdata","util-linux",
+          "words","zlib","tar","less","gzip","which","util-linux","openssh-clients",
+          "openssh-server","dhclient","pciutils","vim-minimal","shadow-utils",
+          "strace","cronie","crontabs","cpio","wget","redhat-release","ipmitool","dnf",
+          "NetworkManager","emacs","passwd","kernel"]

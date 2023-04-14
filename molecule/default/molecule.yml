@@ -4,12 +4,13 @@ dependency:
   options:
     requirements-file: requirements.yml
 driver:
-  name: docker
+  name: podman
 platforms:
   - name: instance
-    image: registry.access.redhat.com/ubi9/ubi
+    image: registry.access.redhat.com/ubi9/ubi-init
     #image: rockylinux/rockylinux:latest
     pre_build_image: true
+    command: "/usr/sbin/init"
 provisioner:
   name: ansible
 verifier:

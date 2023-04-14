@@ -6,7 +6,7 @@
 
 - name: Install Development tools and other dependencies
   ansible.builtin.dnf:
-        name: ['@Development tools', "gpgme-devel"]
+        name: ['@Development tools', "gpgme-devel", "firewalld"]
         state: present
 
 - name: "Install servers & golang"
@@ -22,11 +22,49 @@
 
 - name: Compile ww4
   make:
-        chdir: "{{·ww4_git_path·}}"
+        chdir: "{{ ww4_git_path }}"
         target: "all"
 
 - name: install ww4
   make:
-        chdir: "{{·ww4_git_path·}}"
+        chdir: "{{ ww4_git_path }}"
         target: "install"
 # Installed by default to /usr/local/bin/
+
+
+- name: restart firewalld
+  ansible.builtin.systemd:
+        state: restarted
+        daemon_reload: true
+        name: firewalld
+
+- name: add to firewall warefulf
+  ansible.posix.firewalld:
+        service: warewulf
+        permanent: true
+        state: enabled
+
+- name: add to firewall nfs
+  ansible.posix.firewalld:
+        service: nfs
+        permanent: true
+        state: enabled
+
+- name: add to firewall tftp
+  ansible.posix.firewalld:
+        service: tftp
+        permanent: true
+        state: enabled
+
+# Should be "firewall-cmd --reload"
+- name: restart firewalld again
+  ansible.builtin.systemd:
+        state: restarted
+        daemon_reload: true
+        name: firewalld
+
+
+- name: Template warewulf.conf
+  ansible.builtin.template:
+        src: warewulf.conf.j2
+        dest: /usr/local/etc/warewulf/warewulf.conf
