@@ -6,4 +6,4 @@ roles:
 
 collections:
 - community.general  # for ansible_role_epel
-
+- name: ansible.posix
