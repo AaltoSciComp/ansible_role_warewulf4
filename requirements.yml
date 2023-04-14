@@ -1,0 +1,9 @@
+---
+
+roles:
+- src: https://github.com/AaltoSciComp/ansible_role_epel.git
+  path: roles
+
+collections:
+- community.general  # for ansible_role_epel
+

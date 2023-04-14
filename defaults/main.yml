@@ -1,0 +1,5 @@
+---
+# defaults file for ansible_role_warewulf4
+
+ww4_git_path: "/opt/ww4_git/"
+ww4_git_version: "v4.4.0"

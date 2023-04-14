@@ -1,0 +1,32 @@
+---
+# tasks file for ansible_role_warewulf4
+
+- ansible.builtin.include_role:
+    name: ansible_role_epel
+
+- name: Install Development tools and other dependencies
+  ansible.builtin.dnf:
+        name: ['@Development tools', "gpgme-devel"]
+        state: present
+
+- name: "Install servers & golang"
+  ansible.builtin.dnf:
+        name: ["golang","tftp-server","dhcp-server","nfs-utils"]
+        state: present
+
+- name: "checkout ww4 from github"
+  ansible.builtin.git:
+        repo: 'https://github.com/hpcng/warewulf.git'
+        dest: "{{ ww4_git_path }}"
+        version: "{{ ww4_git_version }}"
+
+- name: Compile ww4
+  make:
+        chdir: "{{·ww4_git_path·}}"
+        target: "all"
+
+- name: install ww4
+  make:
+        chdir: "{{·ww4_git_path·}}"
+        target: "install"
+# Installed by default to /usr/local/bin/
