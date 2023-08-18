@@ -9,7 +9,8 @@ WW4_netmask:    255.255.255.128
 WW4_network:    130.233.180.128
 WW4_dhcp_start: 130.233.180.170
 WW4_dhcp_end:   130.233.180.174
-
+WW4_dhcp_template: dynamic # Set to "static" to lock in the ip addresses of nodes
+WW4_nfs_enabled: true
 
 container_name: rhel9_001
 container_path: /var/warewulf_chroots/
@@ -20,3 +21,6 @@ container_packages: ["basesystem","bash","chkconfig","coreutils","e2fsprogs","et
           "openssh-server","dhclient","pciutils","vim-minimal","shadow-utils",
           "strace","cronie","crontabs","cpio","wget","redhat-release","ipmitool","dnf",
           "NetworkManager","emacs","passwd","kernel"]
+
+
+manage_firewall_in_ww4_role: true

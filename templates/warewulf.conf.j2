@@ -11,6 +11,7 @@ warewulf:
   syslog: false
 dhcp:
   enabled: true
+  template: {{ WW4_dhcp_template }}
   range start: {{ WW4_dhcp_start }}
   range end:   {{ WW4_dhcp_end   }}
   systemd name: dhcpd

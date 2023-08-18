@@ -37,24 +37,30 @@
         state: restarted
         daemon_reload: true
         name: firewalld
+  when: manage_firewall_in_ww4_role
 
 - name: add to firewall warefulf
   ansible.posix.firewalld:
         service: warewulf
         permanent: true
         state: enabled
+  when: manage_firewall_in_ww4_role
 
 - name: add to firewall nfs
   ansible.posix.firewalld:
         service: nfs
         permanent: true
         state: enabled
+  when: manage_firewall_in_ww4_role
+
 
 - name: add to firewall tftp
   ansible.posix.firewalld:
         service: tftp
         permanent: true
         state: enabled
+  when: manage_firewall_in_ww4_role
+
 
 # Should be "firewall-cmd --reload"
 - name: restart firewalld again
@@ -62,9 +68,29 @@
         state: restarted
         daemon_reload: true
         name: firewalld
+  when: manage_firewall_in_ww4_role
 
 
 - name: Template warewulf.conf
   ansible.builtin.template:
         src: warewulf.conf.j2
         dest: /usr/local/etc/warewulf/warewulf.conf
+  tags: ['configure']
+
+- name: configure ww4 subsystems one by one with wwctl configure item
+  ansible.builtin.command:
+    cmd: "wwctl configure {{ item }}"
+  loop:
+    - dhcp
+    - hostfile
+    - nfs
+    - ssh
+    - tftp
+  tags: ['configure','notest']
+
+- name: start and enable warewulfd with systemd
+  ansible.builtin.systemd:
+    state:   restarted
+    enabled: true
+    name:    warewulfd
+  tags: ['configure','notest']
