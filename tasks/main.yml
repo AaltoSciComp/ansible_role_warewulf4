@@ -71,26 +71,5 @@
   when: manage_firewall_in_ww4_role
 
 
-- name: Template warewulf.conf
-  ansible.builtin.template:
-        src: warewulf.conf.j2
-        dest: /usr/local/etc/warewulf/warewulf.conf
-  tags: ['configure']
-
-- name: configure ww4 subsystems one by one with wwctl configure item
-  ansible.builtin.command:
-    cmd: "wwctl configure {{ item }}"
-  loop:
-    - dhcp
-    - hostfile
-    - nfs
-    - ssh
-    - tftp
-  tags: ['configure','notest']
-
-- name: start and enable warewulfd with systemd
-  ansible.builtin.systemd:
-    state:   restarted
-    enabled: true
-    name:    warewulfd
-  tags: ['configure','notest']
+- name: Configure warewulf
+  ansible.builtin.include_tasks: "configure.yml"
