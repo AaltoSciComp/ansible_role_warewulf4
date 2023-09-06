@@ -1,0 +1,12 @@
+[Unit]
+Description=Rebuilds all warewulf overlays
+Requires=warewulfd.service
+After=warewulfd.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/wwctl overlay build
+
+[Install]
+WantedBy=multi-user.target {{ ww4_overlay_rebuild_service_WantedBy }}
+

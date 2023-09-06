@@ -31,6 +31,10 @@
         target: "install"
 # Installed by default to /usr/local/bin/
 
+- name: Create systemd service that rebuilds the overlays
+  ansible.builtin.template:
+        src: warewulf-overlay-rebuild.service.j2
+        dest: /lib/systemd/system/warewulf-overlay-rebuild.service
 
 - name: restart firewalld
   ansible.builtin.systemd:
