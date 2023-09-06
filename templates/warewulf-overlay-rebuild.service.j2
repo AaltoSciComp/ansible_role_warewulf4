@@ -1,7 +1,7 @@
 [Unit]
 Description=Rebuilds all warewulf overlays
 Requires=warewulfd.service
-After=warewulfd.service
+After=warewulfd.service {{ ww4_overlay_rebuild_service_WantedBy }}
 
 [Service]
 Type=oneshot
