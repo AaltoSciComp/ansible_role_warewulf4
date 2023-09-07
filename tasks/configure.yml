@@ -6,6 +6,15 @@
         dest: /usr/local/etc/warewulf/warewulf.conf
   tags: ['configure']
 
+- name: Modify wwinit overlay to include the contents of /etc/fstab from the container
+  ansible.builtin.blockinfile:
+    path: /var/local/warewulf/overlays/wwinit/etc/fstab.ww
+    block: |
+      # Begining of container /etc/fstab contents
+      {{ '{{IncludeFrom $.Container "/etc/fstab"}}' }}
+      # End of container /etc/fstab contents
+    marker: "# {mark} ANSIBLE MANAGED BLOCK (wwinit overlay)'
+
 - name: configure ww4 subsystems one by one with wwctl configure item
   ansible.builtin.command:
     cmd: "wwctl configure {{ item }}"
@@ -23,5 +32,3 @@
     enabled: true
     name:    warewulfd
   tags: ['configure','notest']
-
-    
