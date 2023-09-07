@@ -25,4 +25,4 @@ container_packages: ["basesystem","bash","chkconfig","coreutils","e2fsprogs","et
 
 manage_firewall_in_ww4_role: true
 
-#ww4_overlay_rebuild_service_WantedBy: something.service
+ww4_overlay_rebuild_service_WantedBy: []  #Could be e.g. "something.service"
