@@ -13,7 +13,7 @@
       # Begining of container /etc/fstab contents
       {{ '{{IncludeFrom $.Container "/etc/fstab"}}' }}
       # End of container /etc/fstab contents
-    marker: "# {mark} ANSIBLE MANAGED BLOCK (wwinit overlay)'
+    marker: "# {mark} ANSIBLE MANAGED BLOCK (wwinit overlay)"
 
 - name: configure ww4 subsystems one by one with wwctl configure item
   ansible.builtin.command:
