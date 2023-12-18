@@ -3,7 +3,7 @@
 - name: Template warewulf.conf
   ansible.builtin.template:
         src: warewulf.conf.j2
-        dest: /usr/local/etc/warewulf/warewulf.conf
+        dest: "{{ ww4_config_prefix }}/etc/warewulf/warewulf.conf"
   tags: ['configure']
 
 - name: Modify wwinit overlay to include the contents of /etc/fstab from the container
