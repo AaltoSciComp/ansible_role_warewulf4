@@ -19,7 +19,7 @@ tftp:
   enabled: true
   systemd name: tftp
 nfs:
-  enabled: true
+  enabled: {{ ww4_nfs_enabled }}
   export paths:
   - path: /home
     export options: rw,sync
