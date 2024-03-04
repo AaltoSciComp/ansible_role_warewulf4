@@ -24,12 +24,15 @@
   make:
         chdir: "{{ ww4_git_path }}"
         target: "all"
+        params:
+          PREFIX: "/"
 
 - name: install ww4
   make:
         chdir: "{{ ww4_git_path }}"
         target: "install"
-# Installed by default to /usr/local/bin/
+        params:
+          PREFIX: "/"
 
 - name: Create systemd service that rebuilds the overlays
   ansible.builtin.template:
