@@ -8,7 +8,7 @@
 
 - name: Modify wwinit overlay to include the contents of /etc/fstab from the container
   ansible.builtin.blockinfile:
-    path: "{{ ww4_warewulf4_path }}/overlays/wwinit/etc/fstab.ww"
+    path: "{{ ww4_warewulf4_path }}/overlays/wwinit/rootfs/etc/fstab.ww"
     block: |
       # Begining of container /etc/fstab contents
       {{ '{{IncludeFrom $.Container "/etc/fstab"}}' }}
