@@ -9,6 +9,10 @@
         name: ['@Development tools', "gpgme-devel", "firewalld"]
         state: present
 
+- name: Install iPXE boot images
+  ansible.builtin.dnf:
+        name: ['ipxe-bootimgs-aarch64','ipxe-bootimgs-x86']
+
 - name: "Install servers & golang"
   ansible.builtin.dnf:
         name: ["golang","tftp-server","dhcp-server","nfs-utils"]
