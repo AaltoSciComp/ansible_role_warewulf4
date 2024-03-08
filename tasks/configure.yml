@@ -15,6 +15,21 @@
       # End of container /etc/fstab contents
     marker: "# {mark} ANSIBLE MANAGED BLOCK (wwinit overlay)"
 
+
+- name: workaround a bug in ww4, need symlinks in /share/ipxe
+  block:
+  - name: Find files in /usr/share/ipxe/
+    ansible.builtin.find:
+      paths: /usr/share/ipxe/
+    register: ipxe_files
+
+  - name: Create symbolic links in /share/ipxe/
+    ansible.builtin.file:
+      src: "{{ item.path }}"
+      dest: "/share/ipxe/{{ item.path | basename }}"
+      state: link
+    with_items: "{{ ipxe_files.files }}"
+
 - name: configure ww4 subsystems one by one with wwctl configure item
   ansible.builtin.command:
     cmd: "wwctl configure {{ item }}"
