@@ -18,6 +18,8 @@
 - name: configure ww4 subsystems one by one with wwctl configure item
   ansible.builtin.command:
     cmd: "wwctl configure {{ item }}"
+  register: wwctl_configure_output
+  failed_when: wwctl_configure_output.stderr.find('ERROR') != -1
   loop:
     - dhcp
     - hostfile
