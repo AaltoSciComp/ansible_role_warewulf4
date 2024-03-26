@@ -15,6 +15,16 @@
       # End of container /etc/fstab contents
     marker: "# {mark} ANSIBLE MANAGED BLOCK (wwinit overlay)"
 
+- name: Modify host overlay to disable the range in dhcpd.conf
+  ansible.builtin.lineinfile:
+    path: "{{ ww4_warewulf4_path }}/overlays/host/rootfs/etc/dhcp/dhcpd.conf.ww"
+    insertafter: "{% raw %}subnet {{$.Network}} netmask {{$.Netmask}} {{% endraw %}"
+    line: "#ansible-commented-out {{ item }}"   # Comment out with leading "#"
+    regexp: "{{ item | regex_escape }}"  # match the right line
+    state: present
+  with_items:
+    - "{% raw %}range {{$.Dhcp.RangeStart}} {{$.Dhcp.RangeEnd}};{% endraw %}"
+  when: not WW4_dhcp_answer_all
 
 - name: workaround a bug in ww4, need symlinks in /share/ipxe
   block:
