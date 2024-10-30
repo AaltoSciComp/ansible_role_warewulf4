@@ -26,6 +26,14 @@
     - "{% raw %}range {{$.Dhcp.RangeStart}} {{$.Dhcp.RangeEnd}};{% endraw %}"
   when: not WW4_dhcp_answer_all
 
+- name: Disable ipv6 from NetworkManager configs
+  ansible.builtin.lineinfile:
+    path: "{{ ww4_warewulf4_path }}/overlays/wwinit/rootfs/etc/NetworkManager/system-connections/ww4-managed.ww"
+    regexp: '^method=ignore$'
+    line: 'method=disabled'
+    state: present
+  when: disable_ipv6
+
 - name: workaround a bug in ww4, need symlinks in /share/ipxe
   block:
   - name: Find files in /usr/share/ipxe/
