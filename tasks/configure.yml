@@ -15,6 +15,14 @@
       # End of container /etc/fstab contents
     marker: "# {mark} ANSIBLE MANAGED BLOCK (wwinit overlay)"
 
+- name: Modify generic overlay to make /root/ not world readable
+  ansible.builtin.command:
+    cmd: "wwctl overlay chmod generic {{ item }}"
+  with_items:
+    - "/root/ 750"
+    - "/root/.ssh/ 750"
+    - "/root/.ssh/authorized_keys.ww 640"
+
 - name: Modify host overlay to disable the range in dhcpd.conf
   ansible.builtin.lineinfile:
     path: "{{ ww4_warewulf4_path }}/overlays/host/rootfs/etc/dhcp/dhcpd.conf.ww"
