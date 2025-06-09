@@ -6,33 +6,33 @@
         dest: "{{ ww4_config_prefix }}/etc/warewulf/warewulf.conf"
   tags: ['configure']
 
-- name: Modify wwinit overlay to include the contents of /etc/fstab from the container
+- name: Modify fstab overlay to include the contents of /etc/fstab from the container
   ansible.builtin.blockinfile:
-    path: "{{ ww4_warewulf4_path }}/overlays/wwinit/rootfs/etc/fstab.ww"
+    path: "{{ ww4_warewulf4_path }}/overlays/fstab/rootfs/etc/fstab.ww""
     block: |
       # Begining of container /etc/fstab contents
       {{ '{{IncludeFrom $.Container "/etc/fstab"}}' }}
       # End of container /etc/fstab contents
-    marker: "# {mark} ANSIBLE MANAGED BLOCK (wwinit overlay)"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK (fstab overlay)"
 
 - name: Modify generic overlay to make /root/ not world readable
   ansible.builtin.command:
-    cmd: "wwctl overlay chmod generic {{ item }}"
+    cmd: "wwctl overlay chmod ssh.authorized_keys {{ item }}"
   with_items:
     - "/root/ 750"
     - "/root/.ssh/ 750"
     - "/root/.ssh/authorized_keys.ww 640"
 
-- name: Modify host overlay to disable the range in dhcpd.conf
-  ansible.builtin.lineinfile:
-    path: "{{ ww4_warewulf4_path }}/overlays/host/rootfs/etc/dhcp/dhcpd.conf.ww"
-    insertafter: "{% raw %}subnet {{$.Network}} netmask {{$.Netmask}} {{% endraw %}"
-    line: "#ansible-commented-out {{ item }}"   # Comment out with leading "#"
-    regexp: "{{ item | regex_escape }}"  # match the right line
-    state: present
-  with_items:
-    - "{% raw %}range {{$.Dhcp.RangeStart}} {{$.Dhcp.RangeEnd}};{% endraw %}"
-  when: not WW4_dhcp_answer_all
+#- name: Modify host overlay to disable the range in dhcpd.conf
+#  ansible.builtin.lineinfile:
+#    path: "{{ ww4_warewulf4_path }}/overlays/host/rootfs/etc/dhcp/dhcpd.conf.ww"
+#    insertafter: "{% raw %}subnet {{$.Network}} netmask {{$.Netmask}} {{% endraw %}"
+#    line: "#ansible-commented-out {{ item }}"   # Comment out with leading "#"
+#    regexp: "{{ item | regex_escape }}"  # match the right line
+#    state: present
+#  with_items:
+#    - "{% raw %}range {{$.Dhcp.RangeStart}} {{$.Dhcp.RangeEnd}};{% endraw %}"
+#  when: not WW4_dhcp_answer_all
 
 - name: Disable ipv6 from NetworkManager configs
   ansible.builtin.lineinfile:

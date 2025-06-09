@@ -12,8 +12,8 @@ warewulf:
 dhcp:
   enabled: true
   template: {{ WW4_dhcp_template }}
-  range start: {{ WW4_dhcp_start }}
-  range end:   {{ WW4_dhcp_end   }}
+  #range start: {{ WW4_dhcp_start }}
+  #range end:   {{ WW4_dhcp_end   }}
   systemd name: dhcpd
 tftp:
   enabled: true
@@ -30,3 +30,9 @@ nfs:
     mount options: defaults
     mount: false
   systemd name: nfs-server
+paths:
+  sysconfdir: /etc
+  wwoverlaydir: /var/warewulf/overlays
+  wwchrootdir: /var/warewulf/chroots
+  wwprovisiondir: /var/warewulf/provision
+  datadir: /opt/share
