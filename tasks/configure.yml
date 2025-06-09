@@ -6,9 +6,25 @@
         dest: "{{ ww4_config_prefix }}/etc/warewulf/warewulf.conf"
   tags: ['configure']
 
+- name: ensure rsync is present
+  ansible.builtin.dnf:
+      name: rsync
+      state: present
+
+- name: Copy system2site overlays to allow overlay editing
+  ansible.posix.synchronize:
+    recursive: true
+    src: /share/warewulf/overlays/{{ item }}
+    dest: /var/warewulf/overlays/
+  delegate_to: "{{ inventory_hostname }}"
+  with_items:
+    - fstab
+    - NetworkManager
+    - ssh.authorized_keys
+
 - name: Modify fstab overlay to include the contents of /etc/fstab from the container
   ansible.builtin.blockinfile:
-    path: "{{ ww4_warewulf4_path }}/overlays/fstab/rootfs/etc/fstab.ww""
+    path: "{{ ww4_warewulf4_path }}/overlays/fstab/rootfs/etc/fstab.ww"
     block: |
       # Begining of container /etc/fstab contents
       {{ '{{IncludeFrom $.Container "/etc/fstab"}}' }}
@@ -36,7 +52,7 @@
 
 - name: Disable ipv6 from NetworkManager configs
   ansible.builtin.lineinfile:
-    path: "{{ ww4_warewulf4_path }}/overlays/wwinit/rootfs/etc/NetworkManager/system-connections/ww4-managed.ww"
+    path: "{{ ww4_warewulf4_path }}/overlays/NetworkManager/rootfs/etc/NetworkManager/system-connections/ww4-managed.ww"
     regexp: '^method=ignore$'
     line: 'method=disabled'
     state: present
