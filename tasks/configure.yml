@@ -58,6 +58,20 @@
     state: present
   when: disable_ipv6
 
+- name: Change the NetworkManager system-connections file suffix to .nmconnection
+  replace:
+    path: "{{ ww4_warewulf4_path }}/overlays/NetworkManager/rootfs/etc/NetworkManager/system-connections/ww4-managed.ww"
+    regexp: '^{{ "{{" }} file \(print "warewulf-" \$devname.*$'
+    replace: '{{ "{{" }} file (print "warewulf-" $devname  ".nmconnection") {{ "}}" }}'
+
+- name: Change the NetworkManager system-connections to include missing 1 in address
+  replace:
+    path: "{{ ww4_warewulf4_path }}/overlays/NetworkManager/rootfs/etc/NetworkManager/system-connections/ww4-managed.ww"
+    regexp: '^address1?={{ "{{" }} \$netdev.IpCIDR {{ "}}" }}'
+    replace: 'address1={{ "{{" }} $netdev.IpCIDR {{ "}}" }}'
+
+
+
 - name: workaround a bug in ww4, need symlinks in /share/ipxe
   block:
   - name: Find files in /usr/share/ipxe/
