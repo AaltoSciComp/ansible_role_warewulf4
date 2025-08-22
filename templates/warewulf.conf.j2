@@ -18,6 +18,11 @@ dhcp:
 tftp:
   enabled: true
   systemd name: tftp
+  ipxe:
+    "00:00": bin-x86_64-pcbios-undionly.kpxe
+    "00:07": bin-x86_64-efi-snponly.efi
+    "00:09": bin-x86_64-efi-snponly.efi
+    "00:0B": bin-arm64-efi-snponly.efi
 nfs:
   enabled: {{ ww4_nfs_enabled }}
   export paths:
@@ -31,8 +36,9 @@ nfs:
     mount: false
   systemd name: nfs-server
 paths:
-  sysconfdir: /etc
-  wwoverlaydir: /var/warewulf/overlays
-  wwchrootdir: /var/warewulf/chroots
-  wwprovisiondir: /var/warewulf/provision
   datadir: /share
+  ipxesource: /usr/local/share/ipxe
+  sysconfdir: /etc
+  wwchrootdir: /var/warewulf/chroots
+  wwoverlaydir: /var/warewulf/overlays
+  wwprovisiondir: /var/warewulf/provision
