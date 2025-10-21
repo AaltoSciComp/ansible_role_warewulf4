@@ -5,7 +5,7 @@ network: {{ WW4_network }}
 warewulf:
   port: 9873
   secure: false
-  update interval: 60
+  update interval: {{ WW4_update_interval }}
   autobuild overlays: true
   host overlay: true
   syslog: false

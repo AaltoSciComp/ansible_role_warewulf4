@@ -15,6 +15,7 @@ WW4_dhcp_end:   130.233.180.174
 WW4_dhcp_template: dynamic # Set to "static" to lock in the ip addresses of nodes
 WW4_dhcp_answer_all: true  # Set to false to only answer to configured nodes
 ww4_nfs_enabled: false
+WW4_update_interval: 60
 
 container_name: rhel9_001
 container_path: /var/warewulf_chroots/
